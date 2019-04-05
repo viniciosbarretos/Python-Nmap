@@ -24,7 +24,27 @@
             <hr>
             <p>A project of <a href="https://github.com/viniciosbarretos" target="_blank">Vinicios Barretos</a></p>
 
-            <div class="row">
+            <div class="row" style="margin: 50px 0 75px;">
+                <form>
+                    <div class="col-xs-6">
+                        <label for="disabledTextInput">Domain or IP</label>
+                        <input class="form-control" type="text" placeholder="Address to be scanned">
+                    </div>
+                    <div class="col-xs-2">
+                        <label for="disabledTextInput">Min Port Range</label>
+                        <input class="form-control" type="text" placeholder="0">
+                    </div>
+                    <div class="col-xs-2">
+                        <label for="disabledTextInput">Max Port Range</label>
+                        <input class="form-control" type="text" placeholder="65535">
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" style="margin: 50px 0 75px;">
                 <div class="panel panel-primary filterable">
                     <div class="panel-heading">
                         <h3 class="panel-title">Open Ports</h3>
@@ -53,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin: 50px 0 75px;">
                 <div class="panel panel-warning filterable">
                     <div class="panel-heading">
                         <h3 class="panel-title">Closed Ports</h3>
