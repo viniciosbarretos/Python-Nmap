@@ -34,9 +34,9 @@ def checkPorts():
     port_end = int(request.args.get('port_end'))
 
     # Check if range of port is open
-    isOpen = check_range(domain, port_start, port_end)
+    ports_list = check_range(domain, port_start, port_end)
 
-    return Response(str(isOpen), mimetype='text/plain')
+    return Response(json.dumps(ports_list), mimetype='application/json')
 
 
 @app.route('/ports-info')

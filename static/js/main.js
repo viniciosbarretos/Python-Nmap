@@ -42,7 +42,7 @@ $(document).ready(function(){
 });
 
 
-function getPortsInfo() {
+function getPortsInfo(domain, port_start, port_end) {
 
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://127.0.0.1:5000/ports-info');
@@ -55,7 +55,7 @@ function getPortsInfo() {
 
       if (xhr.status === 200) {
         // request successful
-        return(xhr.responseText);
+        checkPorts(domain, port_start, port_end, xhr.responseText);
       }
       else {
         // request error
@@ -68,6 +68,38 @@ function getPortsInfo() {
 
 }
 
-function checkPorts(domain, port_start, port_end) {
+function saveVar(content) {
+    return content;
+}
 
+function checkPorts(domain, port_start, port_end, portsInfo) {
+
+    // Build URL
+    var url = 'http://127.0.0.1:5000/check-ports?domain=';
+    url += domain + '&port_start=' + port_start + '&port_end=' + port_end;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+
+    // request state change event
+    xhr.onreadystatechange = function() {
+
+      // request completed?
+      if (xhr.readyState !== 4) return;
+
+      if (xhr.status === 200) {
+          // request successful
+          portsInfo = JSON.parse(portsInfo);
+          portsOpen = JSON.parse(xhr.responseText);
+          console.log(portsOpen);
+          console.log(portsInfo);
+      }
+      else {
+        // request error
+        console.log('HTTP error', xhr.status, xhr.statusText);
+      }
+    };
+
+    // start request
+    xhr.send();
 }
