@@ -1,37 +1,51 @@
-from flask import Flask
-from flask import render_template
-import socket
+from flask import Flask, render_template
+from flask import request, jsonify, Response
+from checkPort import check_port, check_range
+
+import csv
+import json
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-
-    domain = '45.55.53.99'
-    port = 20
-
-    def check_port(domain, port):
-
-        # Creating tuple
-        request_tuple = (domain, port)
-
-        # Create socket
-        sock = socket.socket()
-
-        # Set timeout to connection
-        sock.settimeout(1)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-        # Check if port is open
-        result = sock.connect_ex(request_tuple) is 0
-
-        # Close the socket
-        sock.close()
-
-        # Return result
-        return result
+def home():
+    return render_template('index.html')
 
 
-    con = check_port(domain, port)
+@app.route('/check-port')
+def checkPort():
 
-    return render_template('index.html', name=con)
+    # Get request data
+    domain = request.args.get('domain')
+    port = int(request.args.get('port'))
+
+    # Check if port is open
+    isOpen = check_port(domain, port)
+
+    return Response(str(isOpen), mimetype='text/plain')
+
+
+@app.route('/check-ports')
+def checkPorts():
+
+    # Get request data
+    domain = request.args.get('domain')
+    port_start = int(request.args.get('port_start'))
+    port_end = int(request.args.get('port_end'))
+
+    # Check if range of port is open
+    isOpen = check_range(domain, port_start, port_end)
+
+    return Response(str(isOpen), mimetype='text/plain')
+
+
+@app.route('/ports-info')
+def portsInfo():
+
+    csv_file = open('portMap/main-ports.csv', 'r')
+
+    csv_fields = ("port", "protocol", "tcp/udp", "description")
+    read_csv = csv.DictReader(csv_file, csv_fields)
+    json_csv = json.dumps([row for row in read_csv])
+
+    return Response(json_csv, mimetype='application/json')

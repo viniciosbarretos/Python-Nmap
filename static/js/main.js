@@ -40,3 +40,34 @@ $(document).ready(function(){
         }
     });
 });
+
+
+function getPortsInfo() {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://127.0.0.1:5000/ports-info');
+
+    // request state change event
+    xhr.onreadystatechange = function() {
+
+      // request completed?
+      if (xhr.readyState !== 4) return;
+
+      if (xhr.status === 200) {
+        // request successful
+        return(xhr.responseText);
+      }
+      else {
+        // request error
+        console.log('HTTP error', xhr.status, xhr.statusText);
+      }
+    };
+
+    // start request
+    xhr.send();
+
+}
+
+function checkPorts(domain, port_start, port_end) {
+
+}
