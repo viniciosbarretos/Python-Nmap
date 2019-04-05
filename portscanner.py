@@ -43,9 +43,19 @@ def checkPorts():
 def portsInfo():
 
     csv_file = open('portMap/main-ports.csv', 'r')
+    csv_lines = csv_file.readlines()
 
-    csv_fields = ("port", "protocol", "tcp/udp", "description")
-    read_csv = csv.DictReader(csv_file, csv_fields)
-    json_csv = json.dumps([row for row in read_csv])
+    dic = {}
+    for x in csv_lines:
+        x = x.split(',')
+        dic.update(
+            {
+                x[0]: {
+                    "protocol": x[1],
+                    "tcp/udp": x[2],
+                    "description": x[3]
+                }
+            }
+        )
 
-    return Response(json_csv, mimetype='application/json')
+    return Response(json.dumps(dic), mimetype='text/plain')

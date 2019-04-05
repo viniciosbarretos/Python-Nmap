@@ -84,20 +84,40 @@ function checkPorts(domain, port_start, port_end, portsInfo) {
     // request state change event
     xhr.onreadystatechange = function() {
 
-      // request completed?
-      if (xhr.readyState !== 4) return;
+        // request completed?
+        if (xhr.readyState !== 4) return;
 
-      if (xhr.status === 200) {
-          // request successful
-          portsInfo = JSON.parse(portsInfo);
-          portsOpen = JSON.parse(xhr.responseText);
-          console.log(portsOpen);
-          console.log(portsInfo);
-      }
-      else {
-        // request error
-        console.log('HTTP error', xhr.status, xhr.statusText);
-      }
+        if (xhr.status === 200) {
+
+            // request successful
+            portsOpen = JSON.parse(xhr.responseText);
+
+            // Transform portsInfo string to dictionary object
+            var portsInfoDic = JSON.parse(portsInfo);
+
+            // Get table in html file
+            let tableElement = document.getElementById("open-ports");
+
+            // Iterate over open ports
+            for (let i = 0; i < portsOpen.length; i++) {
+                var htmlcontent =
+                      "<tr>" +
+                          "<td>" + portsOpen[i] + "</td>" +
+                          "<td>" + portsInfoDic[portsOpen[i]]["protocol"] + "</td>" +
+                          "<td>" + portsInfoDic[portsOpen[i]]["tcp/udp"] + "</td>" +
+                          "<td>" + portsInfoDic[portsOpen[i]]["description"] + "</td>" +
+                      "</tr>";
+
+                // Add row in html file
+                var newRow = tableElement.insertRow(tableElement.rows.length);
+                newRow.innerHTML = htmlcontent;
+
+            }
+        }
+        else {
+            // request error
+            console.log('HTTP error', xhr.status, xhr.statusText);
+        }
     };
 
     // start request

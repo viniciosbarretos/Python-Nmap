@@ -32,10 +32,11 @@ def check_range(domain, port_start, port_end):
     for port in range(port_start, port_end):
         if check_port(domain, port):
             open_ports.append(
-                {
-                    'port': port,
-                    'desc': 'testing'
-                }
+                # {
+                #     'port': port,
+                #     'desc': 'testing'
+                # }
+                port
             )
 
     return open_ports
