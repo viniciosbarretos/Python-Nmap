@@ -31,7 +31,7 @@ def checkPorts():
     # Get request data
     domain = request.args.get('domain')
     port_start = int(request.args.get('port_start'))
-    port_end = int(request.args.get('port_end'))
+    port_end = int(request.args.get('port_end')) + 1
 
     # Check if range of port is open
     ports_list = check_range(domain, port_start, port_end)

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $('#alert-form').hide();
     $('.filterable .btn-filter').click(function(){
         var $panel = $(this).parents('.filterable'),
         $filters = $panel.find('.filters input'),
@@ -41,6 +42,34 @@ $(document).ready(function(){
     });
 });
 
+$(document).on('submit','#options-form', function(e) {
+    e.preventDefault();
+    if (validateForm()) {
+        getPortsInfo(document.optionsForm.address.value, document.optionsForm.min.value, document.optionsForm.max.value);
+    }
+});
+
+function validateForm() {
+    if( document.optionsForm.address.value == "" ) {
+        $('#alert-form').show();
+        $('#alert').text("Insert a Domain or IP Address");
+        document.optionsForm.address.focus();
+        return false;
+    }
+    if( document.optionsForm.min.value == "" ) {
+        $('#alert-form').show();
+        $('#alert').text("Specify range property");
+        document.optionsForm.address.focus();
+        return false;
+    }
+    if( document.optionsForm.max.value == "") {
+        $('#alert-form').show();
+        $('#alert').text("Specify range property");
+        document.optionsForm.address.focus();
+    }
+    $('#alert-form').hide();
+    return( true );
+}
 
 function getPortsInfo(domain, port_start, port_end) {
 
@@ -66,10 +95,6 @@ function getPortsInfo(domain, port_start, port_end) {
     // start request
     xhr.send();
 
-}
-
-function saveVar(content) {
-    return content;
 }
 
 function checkPorts(domain, port_start, port_end, portsInfo) {
@@ -98,14 +123,30 @@ function checkPorts(domain, port_start, port_end, portsInfo) {
             // Get table in html file
             let tableElement = document.getElementById("open-ports");
 
+            var protocol, tcpudp, description;
+
             // Iterate over open ports
             for (let i = 0; i < portsOpen.length; i++) {
+
+                // Try to recognize a well known port
+                try {
+                   protocol = portsInfoDic[portsOpen[i]]["protocol"];
+                   tcpudp = portsInfoDic[portsOpen[i]]["tcp/udp"];
+                   description = portsInfoDic[portsOpen[i]]["description"];
+                }
+                catch (e) {
+                    protocol = "Unknown";
+                    tcpudp = "Unknown";
+                    description = "Unknown";
+                }
+
+                // Create row html content
                 var htmlcontent =
                       "<tr>" +
                           "<td>" + portsOpen[i] + "</td>" +
-                          "<td>" + portsInfoDic[portsOpen[i]]["protocol"] + "</td>" +
-                          "<td>" + portsInfoDic[portsOpen[i]]["tcp/udp"] + "</td>" +
-                          "<td>" + portsInfoDic[portsOpen[i]]["description"] + "</td>" +
+                          "<td>" + protocol + "</td>" +
+                          "<td>" + tcpudp + "</td>" +
+                          "<td>" + description + "</td>" +
                       "</tr>";
 
                 // Add row in html file
