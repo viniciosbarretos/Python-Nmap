@@ -45,6 +45,7 @@ $(document).ready(function(){
 $(document).on('submit','#options-form', function(e) {
     e.preventDefault();
     if (validateForm()) {
+        cleanTable();
         getPortsInfo(document.optionsForm.address.value, document.optionsForm.min.value, document.optionsForm.max.value);
     }
 });
@@ -69,6 +70,16 @@ function validateForm() {
     }
     $('#alert-form').hide();
     return( true );
+}
+
+function cleanForm() {
+    document.optionsForm.address.value = "";
+    document.optionsForm.min.value = "";
+    document.optionsForm.max.value = ""
+}
+
+function cleanTable() {
+    $('#open-ports').empty();
 }
 
 function getPortsInfo(domain, port_start, port_end) {
