@@ -5,6 +5,6 @@ Scans all open ports of a domain or IP address.
 Execute ./run command
 
 # Dependencies
-Virtualenv with dependencies of requirements.txt
-Python
-Flask 
+- Virtualenv with dependencies of requirements.txt
+- Python
+- Flask 
