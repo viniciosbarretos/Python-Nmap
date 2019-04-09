@@ -85,7 +85,7 @@ function cleanTable() {
 function getPortsInfo(domain, port_start, port_end) {
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://127.0.0.1:5000/ports-info');
+    xhr.open('GET', '/ports-info');
 
     // request state change event
     xhr.onreadystatechange = function() {
@@ -111,7 +111,7 @@ function getPortsInfo(domain, port_start, port_end) {
 function checkPorts(domain, port_start, port_end, portsInfo) {
 
     // Build URL
-    var url = 'http://127.0.0.1:5000/check-ports?domain=';
+    var url = '/check-ports?domain=';
     url += domain + '&port_start=' + port_start + '&port_end=' + port_end;
 
     let xhr = new XMLHttpRequest();
