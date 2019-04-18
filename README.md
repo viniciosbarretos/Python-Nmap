@@ -1,7 +1,7 @@
 # Python-Nmap
 Scans all open ports of a domain or IP address.
 
-![Screenshot](portscanner.png)
+![Screenshot](portscanner.jpg)
 
 # How to run?
 Execute ./run command
